@@ -13,6 +13,9 @@ import {Actions} from "react-native-router-flux";
 import Swiper from 'react-native-swiper';
 //引入 计算适配
 import px2dp from "../../until/Dimensions";
+//
+import LocalImg from "../../until/images";
+import httpUntil from "../../until/httpUntil"
 export default class SwiperCon extends Component {
     constructor(props){
         super(props)
@@ -23,20 +26,26 @@ export default class SwiperCon extends Component {
     // 请求网络数据
     componentDidMount(){   
         this.getSwiper();//内部调用网络请求的具体操作
-    }
+    } 
     getSwiper(){
-        fetch("http://www.yangdh.xyz/VideoGetProcess.ashx?sort=flash&num=3")
-        .then( response => response.json() )
-        .then( result => {
-            this.setState({
-                List:result.data
-            })
+        const _url = LocalImg.httpUrl + LocalImg.swiper + '&num=3'
+        httpUntil.get(_url)
+        .then(result=> {
+            if( result.success ){
+                this.setState({
+                    List:result.data
+                })
+            }  
         })
-        .catch( error =>{
-            this.setState({
-                List:JSON.stringify(error)
-            })
-        })
+        // fetch("http://www.yangdh.xyz/VideoGetProcess.ashx?sort=flash&num=3")
+        // .then( response => response.json() )
+        // .then( result => {
+        //     if( result.success ){
+        //         this.setState({
+        //             List:result.data
+        //         })
+        //     }  
+        // }) 
     }
     render (){
         const data = [

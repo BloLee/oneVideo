@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {ToastAndroid} from 'react-native'; 
+import {ToastAndroid} from 'react-native';  
 //接口请求方法
 export default class httpUntil extends Component{
     static get(url){
@@ -10,6 +10,8 @@ export default class httpUntil extends Component{
                 resolve(result)
             })
             .catch(error => {
+                // alert(JSON.stringify(error))
+                // console.log(JSON.stringify(error))
                 reject(error)
             })
         })
@@ -29,6 +31,8 @@ export default class httpUntil extends Component{
                 resolve(result)
             })
             .catch(error => {
+                // alert(JSON.stringify(error))
+                // console.log(JSON.stringify(error))
                 reject(error)
             })
         })

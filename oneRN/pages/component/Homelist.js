@@ -29,7 +29,7 @@ export default class HomeList extends Component {
                     <View style={styles.listItem}>
                         {
                             list.map((item,index) => ( 
-                                <TouchableOpacity>
+                                <TouchableOpacity activeOpacity={1} onPress={() => { this.props.navigation.navigate('PlayPage',{did:item.did,title:item.vtitle}) }}>
                                     <View style={{position:'relative'}}>
                                         <Image style={{width:"100%", height:px2dp(140),borderRadius:px2dp(3)}} source={{uri: item.horimg}} />
                                         <Text style={{position:'absolute',bottom:px2dp(5),color:"#fff",right:px2dp(8),fontSize:px2dp(12)}}>{item.time}</Text>
@@ -48,10 +48,10 @@ export default class HomeList extends Component {
             default:
                 return(
                     <View style={styles.listItemBox2}>
-                        <Text onPress={() => alert(this.props.navigation) }>1111111111</Text>
+                        {/* <Text onPress={() => alert(this.props.navigation) }> this.props.preFn({did:item.did});</Text> */}
                         {
                             list.map((item,index) => (
-                                <TouchableOpacity style={styles.listItem2} activeOpacity={1} onPress={() => alert(this.props.navigation) }> 
+                                <TouchableOpacity style={styles.listItem2} activeOpacity={1} onPress={() => { this.props.navigation.navigate('PlayPage',{did:item.did,title:item.vtitle}) }}> 
                                     <View style={{paddingRight:px2dp(5),position:'relative'}}>
                                         <View style={{position:'relative'}}>
                                             <Image style={{width:"100%", height:px2dp(140),borderRadius:px2dp(3)}} source={{uri: item.horimg}} /> 
@@ -87,9 +87,13 @@ export default class HomeList extends Component {
             )
         }
     }
-    render(){ 
+    render(){
+        
         return(
-            <View style={styles.listBox}> 
+            <View>
+            {
+                this.state.list.length>0 ? 
+                <View style={styles.listBox}> 
                 {
                     this.state.list.map((d,i) => ( 
                         <View style={styles.listBoxItem}> 
@@ -104,25 +108,26 @@ export default class HomeList extends Component {
                             {this._renderList(i,d.data)} 
                         </View>
                     ))
-                }  
+                } 
+                </View> : <Text>暂无数据</Text>
+            }
+             
             </View>
         )
-    }
+    } 
     // 请求网络数据
     componentDidMount(){   
         this.getSwiper();//内部调用网络请求的具体操作
     }
     getSwiper(){ 
-        httpUntil.get("http://www.yangdh.xyz/videogetprocess.ashx?sort=channel&label=0")
+        const _url = LocalImg.httpUrl + LocalImg.HomeList;
+        httpUntil.get(_url)
         .then(result=> {
-            this.setState({
-                list:result.data
-            })
-        })
-        .catch(error => {
-            this.setState({
-                list:JSON.stringify(error)
-            })
+            if( result.success ){
+                this.setState({
+                    list:result.data
+                })
+            }  
         })
     }
 }

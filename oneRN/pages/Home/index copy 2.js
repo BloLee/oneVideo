@@ -34,10 +34,6 @@ device.DeviceID = DeviceInfo.getUniqueID();
 //tab 滑动
 import ScrollableTabView, {DefaultTabBar,ScrollableTabBar} from 'react-native-scrollable-tab-view';
 // export default HomePage = () => {
-//引入第一个滑动
-import HomeRecom from "./HomeRecom";
-import HomeRecomLL from "./HomeLL";
-import HomeZB from "./HomeZB";
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -66,22 +62,25 @@ export default class HomePage extends Component {
   render() {
     return (
       <Fragment> 
-        <SafeAreaView style={{flex:1}}>
-          <ScrollableTabView
-            style={{flex:1}}
-            ref={'tabView'}
-            renderTabBar={()=> <DefaultTabBar />}
-            tabBarBackgroundColor='#fff'
-            tabBarActiveTextColor='#fa76fd' 
-            tabBarUnderlineStyle={{backgroundColor: '#fa76fd'}}//设置DefaultTabBar和ScrollableTabBarTab选中时下方横线的颜色
-          > 
-            <HomeRecom tabLabel="推荐" {...this.props} />
+        <SafeAreaView>
+          {this._renderHeader()} 
+          <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>  
+            <View style={styles.scrollView}>
+              {/* 这是banner滚动 */}
+              <SwiperCon/> 
+              {/* 这是banner滚动---- */} 
 
-            <HomeRecomLL tabLabel="萝莉" {...this.props}></HomeRecomLL>
-            
-            <HomeZB tabLabel="主播" {...this.props}></HomeZB> 
-
-          </ScrollableTabView>
+              {/* 所有列表分类 */}
+              {/* <HomeList preFn={ (data) => { this.navigation.navigate('PlayPage',{did:data.did}) } } /> */}
+              <HomeList {...this.props}  />
+              {/* 所有列表分类---- */}
+              <View style={{alignItems:'center', justifyContent:'center',marginVertical:px2dp(8)}}>
+                <Text style={{backgroundColor:'#ffdcf5',fontSize:px2dp(16),textAlign:'center',width:"75%",margin:'auto',
+                borderRadius:50,lineHeight:px2dp(40)}}  onPress={ () => {this.navigation.navigate('PlayPage')}} >不够爽！立即换一批</Text> 
+              </View>
+              
+            </View>
+          </ScrollView>
         </SafeAreaView>
       </Fragment>
     );
